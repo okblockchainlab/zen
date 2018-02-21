@@ -1,4 +1,4 @@
-Zen 2.0.10-1
+Zen 2.0.11
 ==============
 
 What is Zen?
@@ -48,7 +48,7 @@ A globally accessible and anonymous blockchain for censorship-resistant communic
 * Install for Windows (Cross-Compiled, building on Windows is not supported yet)
 
 ```
-./zcutil/build-win.sh -j$(nproc)
+./zcutil/build-win.sh --disable-rust -j$(nproc)
 ```
 
 * Install for aarch64(ARM64)

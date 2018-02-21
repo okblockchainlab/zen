@@ -6,7 +6,7 @@
 from test_framework.test_framework import BitcoinTestFramework
 from test_framework.authproxy import JSONRPCException
 from test_framework.util import assert_equal, initialize_chain_clean, \
-    start_node, connect_nodes_bi, sync_blocks
+    start_node, connect_nodes_bi, sync_blocks, sync_mempools
 
 import sys
 import time
@@ -189,8 +189,10 @@ class WalletShieldCoinbaseTest (BitcoinTestFramework):
         self.wait_and_assert_operationid_status(0, opid2)
 
         # sync_all() invokes sync_mempool() but node 2's mempool limit will cause tx1 and tx2 to be rejected.
-        # So instead, we sync on blocks, and after a new block is generated, all nodes will have an empty mempool.
-        sync_blocks(self.nodes)
+        # So instead, we sync on blocks and mempool for node 0 and node 1, and after a new block is generated
+        # which mines tx1 and tx2, all nodes will have an empty mempool which can then be synced.
+        sync_blocks(self.nodes[:2])
+        sync_mempools(self.nodes[:2])
         self.nodes[1].generate(1)
         self.sync_all()
 
@@ -219,61 +221,9 @@ class WalletShieldCoinbaseTest (BitcoinTestFramework):
         assert_equal(result["shieldingUTXOs"], Decimal('33'))
         assert_equal(result["remainingUTXOs"], Decimal('17'))
         self.wait_and_assert_operationid_status(0, result['opid'])
-        sync_blocks(self.nodes)  # don't sync on mempool as node 2 will reject thix tx due to its mempooltxinputlimit
-        self.nodes[1].generate(1)
-        self.sync_all()
-
-        # Verify maximum number of utxos which node 0 can shield is set by default limit parameter of 50
-        self.nodes[0].generate(200)
-        self.sync_all()
-        mytaddr = self.nodes[0].getnewaddress()
-        result = self.nodes[0].z_shieldcoinbase(mytaddr, myzaddr, Decimal('0.0001'))
-        assert_equal(result["shieldingUTXOs"], Decimal('50'))
-        assert_equal(result["remainingUTXOs"], Decimal('50'))
-        self.wait_and_assert_operationid_status(0, result['opid'])
-
-        # Verify maximum number of utxos which node 0 can shield can be set by the limit parameter
-        result = self.nodes[0].z_shieldcoinbase(mytaddr, myzaddr, Decimal('0.0001'), 33)
-        assert_equal(result["shieldingUTXOs"], Decimal('33'))
-        assert_equal(result["remainingUTXOs"], Decimal('17'))
-        self.wait_and_assert_operationid_status(0, result['opid'])
-        sync_blocks(self.nodes)  # don't sync on mempool as node 2 will reject thix tx due to its mempooltxinputlimit
-        self.nodes[1].generate(1)
-        self.sync_all()
-
-        # Verify maximum number of utxos which node 0 can shield is set by default limit parameter of 50
-        self.nodes[0].generate(200)
-        self.sync_all()
-        mytaddr = self.nodes[0].getnewaddress()
-        result = self.nodes[0].z_shieldcoinbase(mytaddr, myzaddr, Decimal('0.0001'))
-        assert_equal(result["shieldingUTXOs"], Decimal('50'))
-        assert_equal(result["remainingUTXOs"], Decimal('50'))
-        self.wait_and_assert_operationid_status(0, result['opid'])
-
-        # Verify maximum number of utxos which node 0 can shield can be set by the limit parameter
-        result = self.nodes[0].z_shieldcoinbase(mytaddr, myzaddr, Decimal('0.0001'), 33)
-        assert_equal(result["shieldingUTXOs"], Decimal('33'))
-        assert_equal(result["remainingUTXOs"], Decimal('17'))
-        self.wait_and_assert_operationid_status(0, result['opid'])
-        sync_blocks(self.nodes)  # don't sync on mempool as node 2 will reject thix tx due to its mempooltxinputlimit
-        self.nodes[1].generate(1)
-        self.sync_all()
-
-        # Verify maximum number of utxos which node 0 can shield is set by default limit parameter of 50
-        self.nodes[0].generate(200)
-        self.sync_all()
-        mytaddr = self.nodes[0].getnewaddress()
-        result = self.nodes[0].z_shieldcoinbase(mytaddr, myzaddr, Decimal('0.0001'))
-        assert_equal(result["shieldingUTXOs"], Decimal('50'))
-        assert_equal(result["remainingUTXOs"], Decimal('50'))
-        self.wait_and_assert_operationid_status(0, result['opid'])
-
-        # Verify maximum number of utxos which node 0 can shield can be set by the limit parameter
-        result = self.nodes[0].z_shieldcoinbase(mytaddr, myzaddr, Decimal('0.0001'), 33)
-        assert_equal(result["shieldingUTXOs"], Decimal('33'))
-        assert_equal(result["remainingUTXOs"], Decimal('17'))
-        self.wait_and_assert_operationid_status(0, result['opid'])
-        sync_blocks(self.nodes)  # don't sync on mempool as node 2 will reject thix tx due to its mempooltxinputlimit
+        # Don't sync node 2 which rejects the tx due to its mempooltxinputlimit
+        sync_blocks(self.nodes[:2])
+        sync_mempools(self.nodes[:2])
         self.nodes[1].generate(1)
         self.sync_all()
 

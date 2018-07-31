@@ -30,7 +30,7 @@ ZCJoinSplit *pzcashParams;
 extern bool fPrintToConsole;
 extern void noui_connect();
 
-BasicTestingSetup::BasicTestingSetup()
+BasicTestingSetup::BasicTestingSetup(const CBaseChainParams::Network& netType)
 {
         assert(init_and_check_sodium() != -1);
         ECC_Start();
@@ -38,7 +38,7 @@ BasicTestingSetup::BasicTestingSetup()
         SetupEnvironment();
         fPrintToDebugLog = false; // don't want to write to debug.log file
         fCheckBlockIndex = true;
-        SelectParams(CBaseChainParams::MAIN);
+        SelectParams(netType);
 }
 BasicTestingSetup::~BasicTestingSetup()
 {

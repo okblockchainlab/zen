@@ -10,8 +10,14 @@ define $(package)_preprocess_cmds
   cd $($(package)_build_subdir); ./autogen.sh
 endef
 
+CCX_VAR=
+BUILD_OS := $(shell uname)
+ifeq ($(BUILD_OS),Darwin)
+	CCX_VAR=CC=gcc CCAS=gcc CPP="gcc -E"
+endif
+
 define $(package)_config_cmds
-  $($(package)_autoconf) --enable-static --disable-shared
+  $($(package)_autoconf) --enable-static --disable-shared $(CCX_VAR)
 endef
 
 define $(package)_build_cmds

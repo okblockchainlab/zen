@@ -321,6 +321,7 @@ static const CRPCCommand vRPCCommands[] =
 #ifdef ENABLE_WALLET
     { "rawtransactions",    "fundrawtransaction",     &fundrawtransaction,     false },
 #endif
+    { "rawtransactions",    "getaddressbyprivatekey", &getaddressbyprivatekey, false },
 
     /* Utility functions */
     { "util",               "createmultisig",         &createmultisig,         true  },

@@ -3,6 +3,7 @@
 
 #include "pubkey.h"
 #include "txdb.h"
+#include "chainparamsbase.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
@@ -13,7 +14,7 @@
 struct BasicTestingSetup {
     ECCVerifyHandle globalVerifyHandle;
 
-    BasicTestingSetup();
+    BasicTestingSetup(const CBaseChainParams::Network& netType = CBaseChainParams::MAIN);
     ~BasicTestingSetup();
 };
 

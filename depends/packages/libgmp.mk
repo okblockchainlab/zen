@@ -8,7 +8,7 @@ BUILD_OS := $(shell uname)
 ifeq ($(BUILD_OS),Darwin)
 	$(package)_config_opts=--enable-cxx --disable-shared --disable-assembly
 else
-	$(package)_config_opts=--enable-cxx --disable-shared
+	$(package)_config_opts=--enable-cxx --disable-shared --with-pic=yes
 endif
 
 define $(package)_config_cmds

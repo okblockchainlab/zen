@@ -17,7 +17,7 @@ ifeq ($(BUILD_OS),Darwin)
 endif
 
 define $(package)_config_cmds
-  $($(package)_autoconf) --enable-static --disable-shared $(CCX_VAR)
+  $($(package)_autoconf) --enable-static --disable-shared --with-pic=yes $(CCX_VAR)
 endef
 
 define $(package)_build_cmds

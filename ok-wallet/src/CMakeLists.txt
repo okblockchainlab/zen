@@ -34,12 +34,12 @@ endif()
 
 add_library(${OKLIBRARY_NAME} SHARED ${ZEN_SOURCE} ${WALLET_LIB_SOURCE})
 target_link_libraries(${OKLIBRARY_NAME}
+  ${PROJECT_SOURCE_DIR}/../src/libbitcoin_server.a
   ${PROJECT_SOURCE_DIR}/../src/libbitcoin_wallet.a
   ${PROJECT_SOURCE_DIR}/../src/leveldb/libleveldb.a
   ${PROJECT_SOURCE_DIR}/../src/leveldb/libmemenv.a
   ${PROJECT_SOURCE_DIR}/../src/crypto/libbitcoin_crypto.a
   ${PROJECT_SOURCE_DIR}/../src/libbitcoin_common.a
-  ${PROJECT_SOURCE_DIR}/../src/libbitcoin_server.a
   ${PROJECT_SOURCE_DIR}/../src/libbitcoin_cli.a
   ${PROJECT_SOURCE_DIR}/../src/libzcash.a
   ${PROJECT_SOURCE_DIR}/../src/libbitcoin_util.a
@@ -52,8 +52,8 @@ target_link_libraries(${OKLIBRARY_NAME}
   ${DEPENDS_LIB}/lib/libboost_thread-mt.a
   ${DEPENDS_LIB}/lib/libboost_chrono-mt.a
   ${DEPENDS_LIB}/lib/libboost_system-mt.a
-  ${DEPENDS_LIB}/lib/libcrypto.a
   ${DEPENDS_LIB}/lib/libssl.a
+  ${DEPENDS_LIB}/lib/libcrypto.a
   ${DEPENDS_LIB}/lib/libminiupnpc.a
   ${DEPENDS_LIB}/lib/libdb_cxx.a
   ${DEPENDS_LIB}/lib/libboost_program_options-mt.a

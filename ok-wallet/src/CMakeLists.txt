@@ -1,20 +1,11 @@
 set(ZEN_SOURCE
 ${PROJECT_SOURCE_DIR}/../src/test/test_bitcoin.cpp
-#${PROJECT_SOURCE_DIR}/../src/main.cpp
-#${PROJECT_SOURCE_DIR}/../src/script/sign.cpp
-#${PROJECT_SOURCE_DIR}/../src/keystore.cpp
-#${PROJECT_SOURCE_DIR}/../src/protocol.cpp
-#${PROJECT_SOURCE_DIR}/../src/amount.cpp
-#${PROJECT_SOURCE_DIR}/../src/netbase.cpp
-#${PROJECT_SOURCE_DIR}/../src/clientversion.cpp
-#${PROJECT_SOURCE_DIR}/../src/base58.cpp
-#${PROJECT_SOURCE_DIR}/../src/core_write.cpp
 )
 
 set(WALLET_LIB_SOURCE
   wallet.cpp
   app_wrapper.cpp
-  #com_okcoin_vault_jni_bitcoindiamond_BitcoinDiamondj.cpp
+  com_okcoin_vault_jni_zen_Zenj.cpp
 )
 
 add_definitions(-DHAVE_CONFIG_H)

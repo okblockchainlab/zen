@@ -13,13 +13,16 @@ public:
   static void SetUpTestCase() {
     const auto& cwd = _get_current_dir();
     ASSERT_FALSE(cwd.empty());
+
 #ifdef __APPLE__
     const auto& mod_path = cwd + "/libzen.dylib";
+    const int open_mode = RTLD_NODELETE;
 #elif __linux__
     const auto& mod_path = cwd + "/libzen.so";
+    const int open_mode = RTLD_LAZY;
 #endif
 
-    wlt_mod = dlopen(mod_path.c_str(), RTLD_LAZY);
+    wlt_mod = dlopen(mod_path.c_str(), open_mode);
     execute = (execute_t)dlsym(wlt_mod, "execute");
   }
 

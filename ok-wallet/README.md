@@ -36,3 +36,8 @@ ln -s /opt/local/bin/gcc-mp-5 /opt/local/bin/gcc-5
 原因：depends/packages/rusk.mk中直接下载bin文件，但下载的版本是固定的。如果出现cargo不能执行的错误，很可能是下载的版本与当前系统不对应。
 
 解决方法：你可以根据自己系统的版本修改depends/packages/rusk.mk中的下载包和哈希值。
+
+
+### 其它注意项
+- 在mac系统中，测试程序test_okwallet遇到一个问题：main函数return以后，程序会崩溃报错：Segmentation fault: 11。当把dlclose（在TearDownTestCase中）注释掉以后，程序正常退出不会崩溃。这个现象只在mac系统出现，在centos7中没出现。  
+后来查到这个[issues](https://github.com/rust-lang/rust/issues/28794)，说是可能_tlv_atexit注册回调函数后，只有整个进程退出回调函数才会被调用，而此时这个dylib已不存在，所以崩溃。解决方法是将dlopen的mode改为RTLD_NODELETE。验证后发现有效。
